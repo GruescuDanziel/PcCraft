@@ -45,6 +45,7 @@
     flex-direction: column;
     justify-content: space-between;
     font-size: 2.5vh; 
+    margin-top:0px;
 
   }
 

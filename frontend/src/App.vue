@@ -1,6 +1,10 @@
 <template>
 
+  <navbar id='navBar' />
   <sideBar id='sideBar' />
+  <div id='quickBuild'>
+  <quick-build />
+  </div>
   <div id='productCards'>
     <productCard :image='"https://lcdn.altex.ro/resize/media/catalog/product/L/a/16fa6a9aef7ffd6209d5fd9338ffa0b1/Laptop-ASUS-X515-argintiu-windows.jpg"' :name="'Laptop'" />
     <productCard :image='"https://s13emagst.akamaized.net/products/31046/31045535/images/res_a63698ef6392cd7d983f0f59576cfb38.jpg"' :name="'Gaming Pc'" :data="'Pre Built'"/>
@@ -13,22 +17,52 @@
 
 import sideBar from './components/sideBar.vue'
 import productCard from './components/productCard.vue'
+import navbar from './components/NavBar.vue'
+import quickBuild from './components/Quickbuild.vue'
 
 export default {
   name: 'App',
   components: {
     sideBar,
-    productCard
+    productCard,
+    navbar,
+    quickBuild
   }
 }
+
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Share&display=swap');
+
+*{
+
+  font-family: Share;
+}
+
 body, html{
+
   
   height:100%;
   margin: 0px;
 
+}
+
+#quickBuild{
+  
+  grid-area: homePage;
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  height:90%;
+
+}
+
+#navBar{
+
+  height:100%;
+  grid-area: navBar;
+  background:#6699CC ;
 }
 
 #productCards{
@@ -43,8 +77,8 @@ body, html{
 
 #app {
   display: grid;
-  grid-template-rows: 5vh auto 30vh;
-  grid-template-columns: 20vh;
+  grid-template-rows: 7vh auto 30vh;
+  grid-template-columns: 20vh auto auto;
   grid-template-areas: "navBar navBar navBar"
                        "sideBar homePage homePage"
                        "sideBar recomandation recomandation";

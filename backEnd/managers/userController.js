@@ -87,7 +87,13 @@ router.delete('/rmUser', (req, res)=>
 {
   usermdl.findByIdAndRemove({_id: req.body.id})
   .then((dataRes)=>{
-    res.send({status: true, message: "Account deleted successfully"})
+    if(dataRes == null)
+    {
+      res.send({status: true, message: "Account deleted successfully"})
+    }
+    else {
+      res.send({status: false, message: "Account doesn't exists!"})
+    }
   })
 })
 

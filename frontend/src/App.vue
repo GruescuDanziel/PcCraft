@@ -1,14 +1,20 @@
 <template>
 
   <navbar id='navBar' />
-  <sideBar id='sideBar' />
-  <div id='quickBuild'>
-  <quick-build />
+  <div v-if='currentPage == "homePage"' id='homePage'>
+    <sideBar id='sideBar' />
+    <div id='quickBuild'>
+    <quick-build />
+    </div>
+    <div id='productCards'>
+      <productCard :image='"https://lcdn.altex.ro/resize/media/catalog/product/L/a/16fa6a9aef7ffd6209d5fd9338ffa0b1/Laptop-ASUS-X515-argintiu-windows.jpg"' :name="'Laptop'" />
+      <productCard :image='"https://s13emagst.akamaized.net/products/31046/31045535/images/res_a63698ef6392cd7d983f0f59576cfb38.jpg"' :name="'Gaming Pc'" :data="'Pre Built'"/>
+      <productCard :image='"https://www.nvidia.com/content/dam/en-zz/Solutions/geforce/ampere/rtx-3090/geforce-rtx-3090-product-gallery-full-screen-3840-2.jpg"' :name="'Components'"/>
+    </div>
   </div>
-  <div id='productCards'>
-    <productCard :image='"https://lcdn.altex.ro/resize/media/catalog/product/L/a/16fa6a9aef7ffd6209d5fd9338ffa0b1/Laptop-ASUS-X515-argintiu-windows.jpg"' :name="'Laptop'" />
-    <productCard :image='"https://s13emagst.akamaized.net/products/31046/31045535/images/res_a63698ef6392cd7d983f0f59576cfb38.jpg"' :name="'Gaming Pc'" :data="'Pre Built'"/>
-    <productCard :image='"https://www.nvidia.com/content/dam/en-zz/Solutions/geforce/ampere/rtx-3090/geforce-rtx-3090-product-gallery-full-screen-3840-2.jpg"' :name="'Components'"/>
+  <div v-if='currentPage == "registerPage"' id='registerPage'>
+    <registerPage />
+
   </div>
 
 </template>
@@ -19,6 +25,7 @@ import sideBar from './components/sideBar.vue'
 import productCard from './components/productCard.vue'
 import navbar from './components/NavBar.vue'
 import quickBuild from './components/Quickbuild.vue'
+import registerPage from './components/registerPage.vue'
 
 export default {
   name: 'App',
@@ -26,7 +33,15 @@ export default {
     sideBar,
     productCard,
     navbar,
-    quickBuild
+    quickBuild,
+    registerPage
+  },
+  data(){
+    
+    return{
+      currentPage: "registerPage"
+    }
+
   }
 }
 
@@ -60,7 +75,6 @@ body, html{
 
 #navBar{
 
-  height:100%;
   grid-area: navBar;
   background:#6699CC ;
 }
@@ -75,14 +89,23 @@ body, html{
 
 }
 
-#app {
+#homePage{
   display: grid;
-  grid-template-rows: 7vh auto 30vh;
-  grid-template-columns: 20vh auto auto;
-  grid-template-areas: "navBar navBar navBar"
-                       "sideBar homePage homePage"
+  grid-template-areas: "sideBar homePage homePage"
                        "sideBar recomandation recomandation";
-    
+  grid-template-rows: auto 30vh;
+  grid-template-columns: 20vh auto auto;
+  height:100%;
+}
+
+#registerPage{
+
+height:70%;
+
+}
+
+#app {
+  
   height:100%;
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

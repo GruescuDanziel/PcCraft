@@ -47,7 +47,6 @@
       display: flex;
       width: 30%;
       height: 100%;
-      margin-top: 1vh;
     }
     .searchbar input{
       width: 100%;

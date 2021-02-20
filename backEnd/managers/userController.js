@@ -40,12 +40,34 @@ router.get('/login',urlencodedParser, (req, res)=>
 
 router.put('/updateUsr', (req, res)=>
 {
-  
+  usermdl.findById({_id: req.body.id})
+  .then((dataRes)=>{
+
+      if(dataRes == null)
+      {
+        res.send("Server error! User not found")
+      }
+      else {
+        res.send("Data changed successfully")
+
+        dataRes.email = req.body.email ? req.body.email : dataRes.email
+        dataRes.password = req.body.password ? req.body.password : dataRes.password
+        dataRes.first_name = req.body.first_name ? req.body.first_name : dataRes.first_name
+        dataRes.last_name = req.body.last_name ? req.body.last_name : dataRes.last_name
+        dataRes.location = req.body.location ? req.body.location : dataRes.location
+
+
+        dataRes.save((err)=>{console.log(err)})
+      }
+  });
 })
 
 router.delete('/rmUser', (req, res)=>
 {
-
+  usermdl.findByIdAndRemove({_id: req.body.id})
+  .then((dataRes)=>{
+    res.send({status: true, message: "Account deleted successfully"})
+  })
 })
 
 

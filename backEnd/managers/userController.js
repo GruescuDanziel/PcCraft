@@ -4,7 +4,7 @@ const router = express.Router();
 const db = require('../database/database')
 const usermdl = require('../database/models/user')
 
-router.get('/createAcc', (req, res)=>
+router.post('/signup', (req, res)=>
 {
     console.log(req.body.last_name)
     let usr = new usermdl
@@ -24,6 +24,21 @@ router.get('/createAcc', (req, res)=>
     })
     
     res.send('User Created Successfully')
+})
+
+router.get('/login', (req, res)=>
+{
+
+})
+
+router.put('/updateUsr', (req, res)=>
+{
+    
+})
+
+router.delete('/rmUser', (req, res)=> 
+{
+    
 })
 
 

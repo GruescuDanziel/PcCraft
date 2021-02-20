@@ -10,23 +10,28 @@ router.post('/signup', urlencodedParser,(req, res)=>
 {
     let usr = new usermdl
     ({
-        first_name: req.body.first_name,
-        last_name: req.body.last_name,
+        username : req.body.username,
         email: req.body.email,
-        password: req.body.password,
-        birthdate: req.body.birthdate,
-        location: req.body.location,
-        phoneNumber: req.body.phoneNumber
+        password: req.body.password
     })
-
-    console.log("Created user var")
-    usr.save();
+  
+    usermdl.findOne({email: req.body.email})
+  .then((dataRes)=>{
+      if(dataRes != null)
+      {
+          res.send("account was taken");
+      }
+      else {
+        usr.save();
+        console.log(dataRes);
+      }
+  });
 })
 
 //User login endpoint
 router.get('/login',urlencodedParser, (req, res)=>
 {
-  usermdl.findOne({email: req.body.email})
+  usermdl.findOne({email: req.query.email})
   .then((dataRes)=>{
       if(dataRes != null)
       {

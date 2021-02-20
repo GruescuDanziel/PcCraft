@@ -14,7 +14,7 @@ const loginUser =()=>{
 
 
 
-router.post('/createAcc',urlencodedParser, (req, res)=>
+router.post('/signup', urlencodedParser,(req, res)=>
 {
     let usr = new usermdl
     ({
@@ -34,7 +34,15 @@ router.post('/login',urlencodedParser, (req, res)=>
 {
     
     loginUser()
+})
 
+router.put('/updateUsr', (req, res)=>
+{
+    
+})
+
+router.delete('/rmUser', (req, res)=> 
+{
     
 })
 

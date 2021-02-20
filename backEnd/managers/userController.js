@@ -6,14 +6,6 @@ const bodyParser = require('body-parser')
 
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
-const loginUser =()=>{
-    usermdl.find({email: req.body.email, password : req.body.password}).then((res)=>{
-        return res;
-    });
-}
-
-
-
 router.post('/signup', urlencodedParser,(req, res)=>
 {
     let usr = new usermdl
@@ -27,23 +19,33 @@ router.post('/signup', urlencodedParser,(req, res)=>
         phoneNumber: req.body.phoneNumber
     })
 
+    console.log("Created user var")
     usr.save();
 })
 
-router.post('/login',urlencodedParser, (req, res)=>
+//User login endpoint
+router.get('/login',urlencodedParser, (req, res)=>
 {
-    
-    loginUser()
+  usermdl.findOne({email: req.body.email})
+  .then((dataRes)=>{
+      if(dataRes != null)
+      {
+        res.send(`Logged in as ${dataRes.email}`)
+      }
+      else {
+        res.send('User does not exists')
+      }
+  });
 })
 
 router.put('/updateUsr', (req, res)=>
 {
-    
+  
 })
 
-router.delete('/rmUser', (req, res)=> 
+router.delete('/rmUser', (req, res)=>
 {
-    
+
 })
 
 

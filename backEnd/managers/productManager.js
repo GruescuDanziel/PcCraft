@@ -9,6 +9,7 @@ const mbMDL = require('../database/models/product').mbMdl
 const caseMdl = require('../database/models/product').caseMdl
 const RAMmdl = require('../database/models/product').RAMmdl
 const pbMdl = require('../database/models/product').pbMdl
+const storageMdl = require('../database/models/product').storageMdl
 
 router.get('/findProduct', (req, res)=>
 {
@@ -98,6 +99,18 @@ router.post('/createProduct', (req, res)=>
             conType: req.body.PB_conType,
             voltage: req.body.PB_voltage,
             power: req.body.PB_power
+          })
+          break;
+
+        case 'Storage':
+          spec = new storageMdl({
+            capacity:   req.body.S_capacity,
+            type:       req.body.S_type,
+            rpm:        req.body.S_RPM,
+            readSpeed:  req.body.S_readSpd,
+            writeSpeed: req.body.S_writeSpd,
+            interface:  req.body.S_interface,
+            Series:     req.body.S_series
           })
           break;
 

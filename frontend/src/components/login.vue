@@ -10,26 +10,39 @@
             <label>Username/E-mail</label>
             </div>
         <div class="inpuser"
-            ><input type="text" placeholder="John Doe"></div>
+            ><input id='userNameInput' type="text" placeholder="John Doe"></div>
         <div class="password">
             <label>Password</label>
         </div>
         <div class="inpass">
-            <input type="password" placeholder="********"></div>
+            <input id='passwodInput' type="password" placeholder="********"></div>
         <div class="noacc">
             <h4>You do not have an account ?
                 <a href="">SignUp</a>
             </h4>
         </div>
         <div class="btn">
-            <button type="button">Login</button>
+            <button @click='loginUser' type="button">Login</button>
         </div>
     </div>
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
-    name: 'login'
+    name: 'login',
+    methods:{
+      async loginUser(){
+        let res = await axios.get('http://localhost:8000/api/user/login', {
+            params : {
+              email:document.getElementById('userNameInput').value,
+              password:document.getElementById('passwodInput').value
+            }
+          })
+        alert(`You are logged in as ${res.data}`)
+      }
+    }
 }
 </script>
 
@@ -40,12 +53,14 @@ export default {
         justify-content: center;
         align-items: center;
         padding-bottom: 20px;
-        width: 98%;
         height: 100%;
         margin: 0 auto;
         margin-top: 5%;
         background-color:#6699CC;
         border-radius: 15px;
+        margin-left: 10vw;
+        margin-right: 10vw;
+    box-shadow: 4px 4px 7px rgba(0, 0, 0, 0.25);
     }
     .Login .user img{
         height: 20vh;
@@ -76,6 +91,7 @@ export default {
         width: 40vh;
         border-style: none;
         border-radius: 15px;
+    box-shadow: 4px 4px 7px rgba(0, 0, 0, 0.25);
 
     }
     .Login .inpass input{
@@ -83,6 +99,7 @@ export default {
         width: 40vh;
         border-style: none;
         border-radius: 15px;
+    box-shadow: 4px 4px 7px rgba(0, 0, 0, 0.25);
 
     }
     .Login .btn button{
@@ -93,6 +110,6 @@ export default {
         background-color: #197BBD;
         color: white;
         font-size: 18px;
-
+    box-shadow: 4px 4px 7px rgba(0, 0, 0, 0.25);
     }
 </style>

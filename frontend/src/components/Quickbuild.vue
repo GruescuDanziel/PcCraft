@@ -36,4 +36,27 @@ export default {
     .Quickbuild .quickbuildlogo img{
       height: 40vh;
     }
+@media only screen and (max-width:414px){
+  
+  .Quickbuild{
+    
+    flex-direction: column-reverse;
+    width:90%;
+    height: 100%;
+
+  }
+
+  .Quickbuild .qbtext p{
+    font-size: 7vw;
+    width:100%;
+  }
+
+  .Quickbuild .quickbuildlogo img{
+      
+      height: 19vh;
+      padding-top: 4vh;
+
+  }
+
+}
 </style>

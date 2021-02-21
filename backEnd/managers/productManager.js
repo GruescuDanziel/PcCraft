@@ -4,15 +4,14 @@ const productMdl = require('../database/models/product').Product
 
 router.get('/getProducts', (req, res)=>
 {
-  let Name = req.body.Name
+  let Name = req.body.name
   let category = req.body.Category
 
   productMdl.find({
-      name: Name
+      name: {"$regex": Name, "$options": "i"}
   }, (err, prod)=>{
     res.send(prod)
   })
-
 })
 
 router.post('/createProduct', (req, res)=>
@@ -22,8 +21,7 @@ router.post('/createProduct', (req, res)=>
     if(result == null)
     {
       let product = new productMdl({
-        "displayName": req.body.name,
-
+        "name": req.body.name,
         "description": req.body.description,
         "price": req.body.price,
         "source": req.body.source

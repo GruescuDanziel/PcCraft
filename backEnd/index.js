@@ -14,12 +14,14 @@ const port = 8000;
 //Managers and Controllers
 const routerManager = require("./managers/routerManager");
 const userRoutes = require('./managers/userController');
+const productRoutes = require('./managers/productManager');
 
 //Config stuff
 
 app.use(bodyparser.json())
 app.use(routerManager);
 app.use("/api/user/",userRoutes)
+app.use("/api/product/", productRoutes)
 
 
 app.listen(port);

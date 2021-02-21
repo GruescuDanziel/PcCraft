@@ -4,6 +4,8 @@ const router = express.Router();
 //models
 const productMdl = require('../database/models/product').Product
 const CPUMdl = require('../database/models/product').CPUMdl
+const GPUMdl = require('../database/models/product').GPUMdl
+
 router.get('/findProduct', (req, res)=>
 {
   let Name = req.body.name
@@ -34,6 +36,18 @@ router.post('/createProduct', (req, res)=>
             igraphName: req.body.CPU_IGraphName
           })
           spec.save()
+
+        case 'GPU':
+          spec = new GPUMdl({
+            "manufacturer": req.body.GPU_manufacturer,
+            "series": req.body.GPU_series,
+            "interface": req.body.GPU_interface,
+            "ports": req.body.GPU_ports,
+            "memType": req.body.GPU_memType,
+            "memSize": req.body.GPU_memSize,
+            "dxSupVer": req.body.GPU_dxSupVer,
+            "technologies": req.body.GPU_technology
+          })
 
           break;
         default:

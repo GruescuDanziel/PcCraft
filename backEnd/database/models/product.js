@@ -9,16 +9,16 @@ const CPUSpecSchema = new mongoose.Schema({
   igraphName: String
 })
 
-const GPUSpecSchema
-
 const productSchema = new mongoose.Schema({
   name: String,
   type: String,
   description: String,
   price: String,
-  source: [String]
+  source: [String],
+  specs: Object
 })
 
 const Product = mongoose.model('Product', productSchema)
+const CPUMdl  = mongoose.model('CPU', CPUSpecSchema)
 
-module.exports = { Product, productSchema }
+module.exports = { Product, CPUMdl,productSchema }

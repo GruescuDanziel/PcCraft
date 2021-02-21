@@ -2,6 +2,18 @@ const express = require('express');
 const router = express.Router();
 const productMdl = require('../database/models/product').Product
 
+router.get('/getProducts', (req, res)=>
+{
+  let Name = req.body.Name
+  let category = req.body.Category
+
+  productMdl.find({
+      name: Name
+  }, (err, prod)=>{
+    res.send(prod)
+  })
+
+})
 
 router.post('/createProduct', (req, res)=>
 {
@@ -10,7 +22,8 @@ router.post('/createProduct', (req, res)=>
     if(result == null)
     {
       let product = new productMdl({
-        "name": req.body.name,
+        "displayName": req.body.name,
+
         "description": req.body.description,
         "price": req.body.price,
         "source": req.body.source

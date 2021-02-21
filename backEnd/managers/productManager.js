@@ -5,6 +5,7 @@ const router = express.Router();
 const productMdl = require('../database/models/product').Product
 const CPUMdl = require('../database/models/product').CPUMdl
 const GPUMdl = require('../database/models/product').GPUMdl
+const mbMDL = require('../database/models/product').mbMdl
 
 router.get('/findProduct', (req, res)=>
 {
@@ -49,8 +50,22 @@ router.post('/createProduct', (req, res)=>
             "technologies": req.body.GPU_technology
           })
 
+        case 'motherboard':
+          spec = new mbMDL({
+            type: req.body.MB_type,
+            socket: req.body.MB_socket,
+            ports: req.body.MB_ports,
+            audioOutType: req.body.MB_audioOutType,
+            pciSlots: req.body.MB_pciSlots,
+            pci3Slots: req.body.MB_pci3slots,
+            memType: req.body.MB_memType,
+            maxMem: req.body.MB_maxMem,
+            memSlots: req.body.memSlots
+          })
+
           break;
         default:
+          res.send({status: false, message: "Type cannot be empty!"})
       }
 
       let product = new productMdl({

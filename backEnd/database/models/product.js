@@ -20,6 +20,25 @@ const GPUSpecSchema = new mongoose.Schema({
   technologies: [String]// Ex: nVidia CUDA/PhysX
 })
 
+const motherboardSchema = new mongoose.Schema({
+  //General
+  type: String,         // Ex: mATX / ATX
+  socket: String,       // CPU Socket
+  ports: [String],      //Supported ports
+  audioOutType: String, // Supported Audio output, Ex: Stereo, 5.1, 7.1
+
+  //PCI Slots
+  pciSlots: Number,
+  pci3Slots: Number,
+
+  //RAM
+  memType: String,      //Supported type of memory (Ex: DDR4)
+  maxMem: Number,       //Maximum supported memory
+  memSlots: Number      //RAM Slots present on the motherboard
+
+
+})
+
 const productSchema = new mongoose.Schema({
   name: String,
   type: String,
@@ -32,6 +51,7 @@ const productSchema = new mongoose.Schema({
 const Product = mongoose.model('Product', productSchema)
 const CPUMdl  = mongoose.model('CPU', CPUSpecSchema)
 const GPUMdl  = mongoose.model('GPU', GPUSpecSchema)
+const mbMdl   = mongoose.model('Motherboard', motherboardSchema)
 
 
-module.exports = { Product, CPUMdl, GPUMdl,productSchema }
+module.exports = { Product, CPUMdl, GPUMdl, mbMdl, productSchema }

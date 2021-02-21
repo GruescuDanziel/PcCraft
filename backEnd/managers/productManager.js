@@ -8,6 +8,7 @@ const GPUMdl = require('../database/models/product').GPUMdl
 const mbMDL = require('../database/models/product').mbMdl
 const caseMdl = require('../database/models/product').caseMdl
 const RAMmdl = require('../database/models/product').RAMmdl
+const pbMdl = require('../database/models/product').pbMdl
 
 router.get('/findProduct', (req, res)=>
 {
@@ -90,6 +91,16 @@ router.post('/createProduct', (req, res)=>
             frequency: req.body.RAM_frequency
           })
           break;
+
+        case 'Powerbrick':
+          spec = new pbMdl({
+            manufacturer: req.body.PB_manufacturer,
+            conType: req.body.PB_conType,
+            voltage: req.body.PB_voltage,
+            power: req.body.PB_power
+          })
+          break;
+
 
         default:
           res.send({status: false, message: "Type cannot be empty!"})

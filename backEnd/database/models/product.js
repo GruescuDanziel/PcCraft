@@ -60,6 +60,14 @@ const RAMSchema = new mongoose.Schema({
 
 })
 
+
+const powerbrickSchema = new mongoose.Schema({
+  manufacturer: String,
+  conType: String,
+  voltage: Number,
+  power: Number
+})
+
 const productSchema = new mongoose.Schema({
   name: String,
   type: String,
@@ -69,12 +77,14 @@ const productSchema = new mongoose.Schema({
   specs: Object
 })
 
+
 const Product = mongoose.model('Product'    , productSchema)
 const CPUMdl  = mongoose.model('CPU'        , CPUSpecSchema)
 const GPUMdl  = mongoose.model('GPU'        , GPUSpecSchema)
 const mbMdl   = mongoose.model('Motherboard', motherboardSchema)
 const caseMdl = mongoose.model('Case'       , caseSchema)
 const RAMmdl  = mongoose.model('RAM'        , RAMSchema)
+const pbMdl   = mongoose.model('Powerbrick' , powerbrickSchema)
 
 
 module.exports = {
@@ -84,6 +94,7 @@ module.exports = {
   caseMdl,
   mbMdl,
   RAMmdl,
+  pbMdl,
 
   productSchema
 }

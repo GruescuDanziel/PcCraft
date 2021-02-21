@@ -15,12 +15,14 @@ const port = 8000;
 //Managers and Controllers
 const routerManager = require("./managers/routerManager");
 const userRoutes = require('./managers/userController');
+const productRoutes = require('./managers/productManager');
 
 //Config stuff
 app.use(cors())
 app.use(bodyparser.json())
 app.use(routerManager);
 app.use("/api/user/",userRoutes)
+app.use("/api/product/", productRoutes)
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");

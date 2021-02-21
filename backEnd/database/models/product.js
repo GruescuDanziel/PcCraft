@@ -36,7 +36,6 @@ const motherboardSchema = new mongoose.Schema({
   maxMem: Number,       //Maximum supported memory
   memSlots: Number      //RAM Slots present on the motherboard
 
-
 })
 
 const caseSchema = new mongoose.Schema({
@@ -49,6 +48,15 @@ const caseSchema = new mongoose.Schema({
   illumination: String,
   includedFans: Boolean,
   optionalFanSlots: [String]
+
+})
+
+const RAMSchema = new mongoose.Schema({
+  model: String,
+  type: String,
+  capacity: String,
+  radiator: String,
+  frequency: Number
 
 })
 
@@ -66,6 +74,7 @@ const CPUMdl  = mongoose.model('CPU'        , CPUSpecSchema)
 const GPUMdl  = mongoose.model('GPU'        , GPUSpecSchema)
 const mbMdl   = mongoose.model('Motherboard', motherboardSchema)
 const caseMdl = mongoose.model('Case'       , caseSchema)
+const RAMmdl  = mongoose.model('RAM'        , RAMSchema)
 
 
 module.exports = {
@@ -74,6 +83,7 @@ module.exports = {
   GPUMdl,
   caseMdl,
   mbMdl,
+  RAMmdl,
 
   productSchema
 }

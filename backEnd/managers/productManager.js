@@ -7,6 +7,7 @@ const CPUMdl = require('../database/models/product').CPUMdl
 const GPUMdl = require('../database/models/product').GPUMdl
 const mbMDL = require('../database/models/product').mbMdl
 const caseMdl = require('../database/models/product').caseMdl
+const RAMmdl = require('../database/models/product').RAMmdl
 
 router.get('/findProduct', (req, res)=>
 {
@@ -77,6 +78,16 @@ router.post('/createProduct', (req, res)=>
             illumination: req.body.C_illumination,
             includedFans: req.body.C_includedFans,
             optionalFanSlots: req.body.C_optionalFanSlots
+          })
+          break;
+
+        case 'RAM':
+          spec = new RAMmdl({
+            model: req.body.RAM_model,
+            type: req.body.RAM_type,
+            capacity: req.body.RAM_capacity,
+            radiator: req.body.RAM_radiator,
+            frequency: req.body.RAM_frequency
           })
           break;
 

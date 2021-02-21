@@ -39,6 +39,19 @@ const motherboardSchema = new mongoose.Schema({
 
 })
 
+const caseSchema = new mongoose.Schema({
+  type: String,             // Case type (Ex: MiddleTower)
+  mbCompatibility: [String],// Motherboard compatibility (Ex: ATX)
+  dimensions: String,
+  mass: String,
+  expansionSlots: Number,
+  externalConnectors: [String],
+  illumination: String,
+  includedFans: Boolean,
+  optionalFanSlots: [String]
+
+})
+
 const productSchema = new mongoose.Schema({
   name: String,
   type: String,
@@ -48,10 +61,19 @@ const productSchema = new mongoose.Schema({
   specs: Object
 })
 
-const Product = mongoose.model('Product', productSchema)
-const CPUMdl  = mongoose.model('CPU', CPUSpecSchema)
-const GPUMdl  = mongoose.model('GPU', GPUSpecSchema)
+const Product = mongoose.model('Product'    , productSchema)
+const CPUMdl  = mongoose.model('CPU'        , CPUSpecSchema)
+const GPUMdl  = mongoose.model('GPU'        , GPUSpecSchema)
 const mbMdl   = mongoose.model('Motherboard', motherboardSchema)
+const caseMdl = mongoose.model('Case'       , caseSchema)
 
 
-module.exports = { Product, CPUMdl, GPUMdl, mbMdl, productSchema }
+module.exports = {
+  Product,
+  CPUMdl,
+  GPUMdl,
+  caseMdl,
+  mbMdl,
+
+  productSchema
+}

@@ -6,6 +6,7 @@ const productMdl = require('../database/models/product').Product
 const CPUMdl = require('../database/models/product').CPUMdl
 const GPUMdl = require('../database/models/product').GPUMdl
 const mbMDL = require('../database/models/product').mbMdl
+const caseMdl = require('../database/models/product').caseMdl
 
 router.get('/findProduct', (req, res)=>
 {
@@ -36,7 +37,7 @@ router.post('/createProduct', (req, res)=>
             hasIntegratedGraph: req.body.CPU_hasIGraph,
             igraphName: req.body.CPU_IGraphName
           })
-          spec.save()
+          break;
 
         case 'GPU':
           spec = new GPUMdl({
@@ -49,6 +50,7 @@ router.post('/createProduct', (req, res)=>
             "dxSupVer": req.body.GPU_dxSupVer,
             "technologies": req.body.GPU_technology
           })
+          break;
 
         case 'motherboard':
           spec = new mbMDL({
@@ -62,11 +64,27 @@ router.post('/createProduct', (req, res)=>
             maxMem: req.body.MB_maxMem,
             memSlots: req.body.memSlots
           })
+          break
 
+        case 'pcase':
+          spec = new caseMdl({
+            type: req.body.C_type,
+            mbCompatibility: req.body.C_,
+            dimensions: req.body.C_dimensions,
+            mass: req.body.C_mass,
+            expansionSlots: req.body.C_expansionSlots,
+            externalConnectors: req.body.C_externalConnectors,
+            illumination: req.body.C_illumination,
+            includedFans: req.body.C_includedFans,
+            optionalFanSlots: req.body.C_optionalFanSlots
+          })
           break;
+
         default:
           res.send({status: false, message: "Type cannot be empty!"})
+          break;
       }
+      spec.save()
 
       let product = new productMdl({
         "name": req.body.name,

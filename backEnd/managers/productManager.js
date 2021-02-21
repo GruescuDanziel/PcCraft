@@ -69,7 +69,7 @@ router.post('/createProduct', (req, res)=>
         case 'pcase':
           spec = new caseMdl({
             type: req.body.C_type,
-            mbCompatibility: req.body.C_,
+            mbCompatibility: req.body.C_mbCompatibility,
             dimensions: req.body.C_dimensions,
             mass: req.body.C_mass,
             expansionSlots: req.body.C_expansionSlots,

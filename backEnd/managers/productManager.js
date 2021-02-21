@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const productMdl = require('../database/models/product').Product
 
-router.get('/getProducts', (req, res)=>
+router.get('/findProduct', (req, res)=>
 {
   let Name = req.body.name
   let category = req.body.Category

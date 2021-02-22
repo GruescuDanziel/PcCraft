@@ -39,14 +39,39 @@
   }
 
   
+@media only screen and (max-width:414px){
+
+  #productCard{
+    
+    height: 15vh;
+    width: 100%;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+  }
+
+  #productImage img{
+    width: 20vw;
+  }
+  
+  #productData{
+    
+    font-size: 2vw;
+  
+  }
+
+
+}
 
 </style>
 <script>
 export default{
   
   props : ['image', 'data', 'price', 'name'],
-  name : "productCard"
-
-}
+  name : "productCard",
+     }
 
 </script>

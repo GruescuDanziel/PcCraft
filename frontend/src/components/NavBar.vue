@@ -7,22 +7,40 @@
             <img src="../assets/Search.svg" alt="">
         </div>
            <div class="icons">
-            <img src="../assets/User.svg" alt="">
-            <img src="../assets/Wishlist.svg" alt="">
-            <img src="../assets/Cart.svg">
+            <img @click="changePage('registerPage')" src="../assets/User.svg" alt="">
+            <img @click="changePage('explorePage')" src="../assets/Wishlist.svg" alt="">
+            <img @click="changePage('homePage')" src="../assets/Cart.svg">
             <img src="../assets/Quickbuild.svg" alt="">
-        </div> 
+          </div> 
+          <div class='PhoneIcon'>
+            
+            <img @click="dropDown" src="../assets/BurgerMenu.svg">
+          </div>
       </div>
     </div>
 </template>
 
 <script>
     export default {
-      name: 'NavBar'
+      name: 'NavBar',
+      methods:{
+        changePage(nextPage){
+          this.$emit('changePage', nextPage);
+        },
+        dropDown(){
+            
+          this.$emit('dropDown')
+        }
+      }
 }
 </script>
 
 <style scoped>
+  
+  .PhoneIcon{
+    display: none;
+  }
+
   #mainContainer{
 
     height: 100%;
@@ -69,4 +87,32 @@
       width: 20%;
       margin-right:2%; 
     }
+@media only screen and (max-width:414px){
+
+
+  .icons{
+    display:none;
+  }
+  .PhoneIcon{
+    display: inline;
+    color: white;
+  }
+
+  .PhoneIcon img{
+    width: 30%;
+  }
+
+  .searchbar{
+    width: 40%;
+    }
+  .searchbar img{
+    display:none;
+  }
+  .searchbar input{
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+  }
+  
+
+}
 </style>

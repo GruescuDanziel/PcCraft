@@ -7,9 +7,9 @@
             <img src="../assets/Search.svg" alt="">
         </div>
            <div class="icons">
-            <img @click="changePage('registerPage')" src="../assets/User.svg" alt="">
+            <img @click="changePage('loginPage')" src="../assets/User.svg" alt="">
             <img @click="changePage('explorePage')" src="../assets/Wishlist.svg" alt="">
-            <img @click="changePage('homePage')" src="../assets/Cart.svg">
+            <img @click="changePage('userPage')" src="../assets/Cart.svg">
             <img src="../assets/Quickbuild.svg" alt="">
           </div> 
           <div class='PhoneIcon'>

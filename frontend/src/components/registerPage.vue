@@ -3,6 +3,16 @@
     <div id="registerInputs">
       <h3> Username </h3>
       <input id="userNameInput">
+      <div id="nameInputs">
+        <div>
+          <h3> LastName</h3>
+          <input id="lastNameInput">
+        </div>
+        <div>
+          <h3> FirstName</h3>
+          <input id="firstNameInput">
+        </div>
+      </div>
       <h3> Email</h3>
       <input id="emailInput">
       <h3> Password </h3>
@@ -36,10 +46,13 @@ import axios from 'axios'
     methods : {
       
       async registerUser(){
-        const res = await axios.post('http://2.tcp.ngrok.io:19761/api/user/signup', {
+        const res = await axios.post('http://localhost:8000/api/user/signup', {
               username:document.getElementById('userNameInput').value,
               email:document.getElementById('emailInput').value,
-              password:document.getElementById('passwordInput').value})
+              password:document.getElementById('passwordInput').value,
+              last_name:document.getElementById('lastNameInput').value,
+              first_name:document.getElementById('firstNameInput').value,
+              })
         if(res.data == 'account was taken')
           alert("This account was taken")
       }
@@ -126,6 +139,19 @@ import axios from 'axios'
   #alreadyHaveAnAccount h3{
     margin-bottom: 2vh;
     text-align:center;
+
+  }
+
+  #nameInputs{
+
+    display: flex;
+    width: 100%;
+    flex-direction:row;
+  }
+
+  #nameInputs div{
+    
+    margin: 1%;
 
   }
 @media only screen and (max-width:414px){

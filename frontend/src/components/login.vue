@@ -29,7 +29,7 @@
 
 <script>
 import axios from 'axios'
-
+import VueCookies from 'vue-cookies'
 export default {
     name: 'login',
     methods:{
@@ -38,9 +38,11 @@ export default {
             params : {
               email:document.getElementById('userNameInput').value,
               password:document.getElementById('passwodInput').value
-            }
+            },
+            withCredentials: true
           })
-        alert(`You are logged in as ${res.data}`)
+        console.log(res);
+       VueCookies.set('userName', res.data.name,12222)
       }
     }
 }

@@ -26,7 +26,7 @@
                 <input type="text">
             </div>
             <div class="nextbtn">
-                <button type="Button"><h2>Next</h2> <img src="../assets/Next.svg" alt=""></button>
+                <button type="Button"><h2>Next</h2> </button>
             </div>
         </div>
     </div>
@@ -40,14 +40,16 @@ export default {
 
 <style scoped>
     .Registercontainer{
-        width: 100%;
-        height: 100%;
+        width: 60%;
+        height: 60%;
         display: flex;
         flex-direction: row;
         justify-content: center;
         align-content: center;
         background-color:#6699CC ;
         padding: 2vh;
+        border-radius: 15px;
+        box-shadow: 6px 4px 10px rgba(0, 0, 0, 0.25);
     }
     .Registercontainer .Registercontent label{
         color: white;
@@ -57,7 +59,8 @@ export default {
         border-style: none;
         border-radius: 15px;
         height: 6vh;
-        width: 350px;
+        width: 60vw;
+        box-shadow: 6px 4px 10px rgba(0, 0, 0, 0.25);
     }
     .Registercontainer .Registercontent .nextbtn{
         padding: 2vh;
@@ -67,8 +70,8 @@ export default {
         margin-top: 2px;
     }
     .Registercontainer .Registercontent .nextbtn h2{
-        margin-left:8vh;
         color: white;
+        width: 100%;
     }
     .Registercontainer .Registercontent .nextbtn button{
         margin: 0 auto;
@@ -78,6 +81,7 @@ export default {
         border-radius: 15px;
         background-color:#197BBD;
         width: 75%;
+        box-shadow: 6px 4px 10px rgba(0, 0, 0, 0.25);
         height: 8vh;
         
     }

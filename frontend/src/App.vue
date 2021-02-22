@@ -18,13 +18,22 @@
   </div>
   <div @register='registerUser' v-if='currentPage == "registerPage"' id='registerPage'>
     <sideBar @changePage="changePage" id='sideBar' />
-    <registerPage />
+    <registerPage v-if="currentReg == 1" @click="nextReg" />
+    <registerPage2 v-if="currentReg == 2" @click="nextReg" />
 
+  </div>
+
+  <div v-if='currentPage == "userPage"' class='userPage'>
+      
+    <sideBar @changePage="changePage" id='sideBar' />
+      <userInterface />
+    
   </div>
   
   <div v-if='currentPage == "explorePage"' id='explorePage'>
       
-      <li v-for='s in 9' :key='s.key'>
+    <sideBar @changePage="changePage" id='sideBar' />
+      <li class="explorePageProduct" v-for='s in 9' :key='s.key'>
       <productCard class='productCardExplore' :image='"https://www.nvidia.com/content/dam/en-zz/Solutions/geforce/ampere/rtx-3090/geforce-rtx-3090-product-gallery-full-screen-3840-2.jpg"' :name="'Components'"/>
       </li>
     
@@ -41,201 +50,166 @@
 
 <script>
 
-import sideBar from './components/sideBar.vue'
-import productCard from './components/productCard.vue'
-import navbar from './components/NavBar.vue'
-import quickBuild from './components/Quickbuild.vue'
-import registerPage from './components/registerPage.vue'
-import loginPage from './components/login.vue'
-
-
-export default {
-  name: 'App',
-  components: {
-    sideBar,
-    productCard,
-    navbar,
-    quickBuild,
-    registerPage,
-    loginPage
-  },
-  data(){
-    
-    return{
-      currentPage: "homePage"
-    }
-
-  },
-  methods: {
-    changePage(nextPage){
-        
-        this.currentPage = nextPage
-
+  import axios from 'axios'
+  
+  import sideBar from './components/sideBar.vue'
+  import navbar from './components/NavBar.vue'
+  
+  import productCard from './components/productCard.vue'
+  import quickBuild from './components/Quickbuild.vue'
+  
+  import registerPage from './components/Register.vue'
+  import registerPage2 from './components/Register2.vue'
+  import loginPage from './components/login.vue'
+  import userInterface from './components/Userinterface.vue'
+  
+  
+  export default {
+    name: 'App',
+    components: {
+      sideBar,
+      productCard,
+      navbar,
+      quickBuild,
+      registerPage,
+      loginPage,
+      userInterface,
+      registerPage2
     },
-
-    dropSideBar(){
-
-      if(document.getElementById('sideBar').style.display !='none'){
-        document.getElementById('sideBar').style.display = 'none';
-        document.getElementById('quickBuild').style.filter = "none"
-        document.getElementById('productCardsPhone').style.filter = "none"
+    data(){
+      return{
+        currentPage: "homePage",
+        currentReg : 1
       }
-      else{
-        document.getElementById('sideBar').style.display = 'block';
-        document.getElementById('quickBuild').style.filter = "blur(2px)"
-        document.getElementById('productCardsPhone').style.filter = "blur(2px)"
+    },
+    methods: {
+      changePage(nextPage){
+        this.currentPage = nextPage
+      },
+      nextReg(){
+        this.currentReg = 2;
+      },
+      dropSideBar(){
+        if(document.getElementById('sideBar').style.display !='none'){
+          document.getElementById('sideBar').style.display = 'none';
+          document.getElementById('quickBuild').style.filter = "none"
+          document.getElementById('productCardsPhone').style.filter = "none"
+        }else{
+          document.getElementById('sideBar').style.display = 'block';
+          document.getElementById('quickBuild').style.filter = "blur(2px)"
+          document.getElementById('productCardsPhone').style.filter = "blur(2px)"
+        }
       }
+    },
+    mounted(){
+      axios.get('http://localhost:8000/api/user/startup', { withCredentials: true});
+      this.dropSideBar();
+    }
+}
+</script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Share&display=swap');
+
+  *{font-family: Share;}
+
+  body, html{
+    overflow-y:hidden;
+    height:100%;
+    margin: 0px;
+    }
+
+  #quickBuild{
+    grid-area: homePage;
+    display: flex;
+    justify-content: center;
+    align-self: center;
+    height:90%;
+  }
+  
+  #navBar{
+    grid-area: navBar;
+    background:#6699CC ;
+  }
+  
+  #productCards, #productCardsPhone{
+    grid-area: recomandation;
+    display: flex;
+    justify-content: space-between;
+    margin-left: 10vw;
+    margin-right: 10vw;
+  }
+  
+  #homePage{
+    display: grid;
+    grid-template-areas: "sideBar homePage homePage"
+                         "sideBar recomandation recomandation";
+    grid-template-rows: auto 30vh;
+    grid-template-columns: 20vh auto auto;
+    height:100%;
+  }
+  
+  #registerPage{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height:100%;
+  }
+  
+  #app {
+    height:100%;
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
+  }
+  
+  #explorePage .explorePageProduct{
+    list-style: none;
+    margin-left: 10vw;
+    margin-bottom: 5vw;
+  }
+  
+  #explorePage{
+    display: flex;
+    column-count: 3;
+    flex-wrap: wrap;
+  }
+  
+  #homePage #sideBar{display:block;}
+  
+  #sideBar{display:none;}
+  
+  @media only screen and (max-width:414px){
+  
+    #explorePage .explorePageProduct{
+      position:relative;
+      width: 100%;
+      margin:3vh;
     }
     
-
-  },
-
-  mounted(){
- 
-      
-      if(document.getElementById('sideBar').style.display !='none' && screen.width <= 414){
-        document.getElementById('sideBar').style.display = 'none';
-        document.getElementById('quickBuild').style.filter = "none"
-        document.getElementById('productCardsPhone').style.filter = "none"
+    
+    #homePage{
+        grid-template-columns: 100% auto;
+        grid-template-areas: "homePage sideBar"
+                             "recomandation sideBar";
       }
-      else if(document.getElementById('sideBar').style.display =='none' && screen.width <= 414){
-        document.getElementById('sideBar').style.display = 'block';
-        document.getElementById('quickBuild').style.filter = "blur(2px)"
-        document.getElementById('productCardsPhone').style.filter = "blur(2px)"
-      }   
+      #quickBuild{
+        width:100%;
+        display: flex;
+        justify-content: center;
+        align-self: center;
+    }
+    
+    #sideBar{
+      display:block;
+      position: fixed;
+      z-index: 1000;
+      right:0px; 
+    }
+    
+    #productCards{display:none;}
+
+    .userPage{height:100%;}
   }
-}
-
-</script>
-
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Share&display=swap');
-
-*{
-
-  font-family: Share;
-}
-
-body, html{
-
-  overflow-y:hidden;
-  
-  height:100%;
-  margin: 0px;
-
-}
-
-#quickBuild{
-  
-  grid-area: homePage;
-  display: flex;
-  justify-content: center;
-  align-self: center;
-  height:90%;
-
-}
-
-#navBar{
-
-  grid-area: navBar;
-  background:#6699CC ;
-}
-
-#productCards, #productCardsPhone{
-
-  grid-area: recomandation;
-  display: flex;
-  justify-content: space-between;
-  margin-left: 10vw;
-  margin-right: 10vw;
-
-}
-
-#homePage{
-  display: grid;
-  grid-template-areas: "sideBar homePage homePage"
-                       "sideBar recomandation recomandation";
-  grid-template-rows: auto 30vh;
-  grid-template-columns: 20vh auto auto;
-  height:100%;
-}
-
-#registerPage{
-
-height:70%;
-
-}
-
-#app {
-  
-  height:100%;
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-#explorePage li{
-  
-  list-style: none;
-  margin-left: 10vw;
-  margin-bottom: 5vw;
-
-}
-
-#explorePage{
-  
-  display: flex;
-  column-count: 3;
-  flex-wrap: wrap;
-
-}
-
-
-#homePage #sideBar{
-  display:block;
-}
-
-#sideBar{
-  display:none;
-}
-
-@media only screen and (max-width:414px){
-
-#explorePage li{
-  position:relative;
-  width: 100%;
-  margin:3vh;
-}
-
-
-#homePage{
-  grid-template-columns: 100% auto;
-  grid-template-areas: "homePage sideBar"
-                       "recomandation sideBar";
-   }
-   #quickBuild{
-  width:100%;
-  display: flex;
-  justify-content: center;
-  align-self: center;
-
-}
-
-
-#sideBar{
-display:block;
-position: fixed;
-z-index: 1000;
-right:0px; 
-}
-
-#productCards{
-
-  display:none;
-}
-
-
-}
 </style>

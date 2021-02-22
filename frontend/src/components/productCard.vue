@@ -18,6 +18,7 @@
 
   #productCard{
     
+    background: white;
     height: 25vh;
     width: 20vw;
     border-radius: 15px;

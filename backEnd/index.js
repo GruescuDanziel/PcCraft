@@ -3,6 +3,7 @@ const express = require("express");
 const mongoose = require('mongoose');
 const dotenv = require("dotenv")
 const bodyparser = require("body-parser")
+const cookieParser = require('cookie-parser')
 const cors = require('cors')
 
 //configure .env
@@ -18,8 +19,10 @@ const userRoutes = require('./managers/userController');
 const productRoutes = require('./managers/productManager');
 
 //Config stuff
+app.use(cookieParser())
 app.use(cors())
-app.use(bodyparser.json())
+app.use(bodyparser.urlencoded({ extended: true}));
+app.use(express.static('public'));
 app.use(routerManager);
 app.use("/api/user/",userRoutes)
 app.use("/api/product/", productRoutes)

@@ -3,7 +3,8 @@ const router      = express.Router();
 const db          = require('../database/database')
 const usermdl     = require('../database/models/user')
 const bodyParser  = require('body-parser')
-const bcrypt      = require('bcrypt')
+const bcrypt      = require('bcrypt');
+const { reset }   = require('nodemon');
 
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
@@ -87,13 +88,6 @@ router.get('/login',urlencodedParser, (req, res)=>
   });
 })
 
-
-router.get('/startup', (req,res)=>{
-    console.log(req.cookies.jwtToken)
-    res.cookie('userName', jwt.verify(req.cookies.jwtToken, process.env.JWT_SECRET))
-})
-
-
 router.put('/updateUsr', (req, res)=>
 {
   bcrypt.hash(req.body.password, 10, (err, hashed)=>{
@@ -132,6 +126,26 @@ router.delete('/rmUser', (req, res)=>
     }
   })
 })
+
+
+router.get('/resetPass', (req, res)=>{
+  let resetCode = Math.floor(Math.random() * (999999 - 100000) + 100000)
+  let email     = req.query.email
+  res.cookie('resCode', bcrypt.hash(resetCode, 10))
+  
+  const userJwt = jwt.sign({ 
+    email  : email,
+    resCode: resetCode},
+    process.env.JWT_SECRET);
+    res.send(userJwt)
+})
+
+router.post('/resetPass', (req,res)=>
+{
+    usermdl.find({})
+    let passwd = bcrypt.hash(res.password, 10)
+})
+
 
 
 module.exports = router

@@ -21,11 +21,9 @@ router.post('/startup', (req,res)=>{
     if(req.cookies.jwtToken != null){
     const userData = setUserDataInCookies(req.cookies.jwtTokenreq.cookies.jwtToken)
         res.cookie('username', userData.username, {maxAge : 2000000})
-           .cookie('name', userData.name, {maxAge: 20000000})
-           .cookie('email', userData.email, {maxAge: 200000000})
-           .sendStatus(200);
+            .cookie('name', userData.name, {maxAge: 20000000})
+            .cookie('email', userData.email, {maxAge: 200000000})
+            .sendStatus(200);
     }
 })
-
-module.exports = {'router' : router,
-                  'create' : createUserToken};
+module.exports = {'router' : router,'create' : createUserToken};

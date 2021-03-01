@@ -34,15 +34,30 @@ export default {
     name: 'login',
     methods:{
       async loginUser(){
-        let res = await axios.get('http://localhost:8000/api/user/login', {
-            params : {
-              email:document.getElementById('userNameInput').value,
-              password:document.getElementById('passwodInput').value
+        let res = await axios(
+          {
+              
+            method:"GET",
+            url:"http://localhost:8000/api/user/login",
+            params :{
+              email: document.getElementById("userNameInput").value,
+              password: document.getElementById("passwodInput").value,
             },
-            withCredentials: true
-          })
+            withCredentials: false,
+            'Content-Type': 'application/json'
+
+          }
+        );
+
         console.log(res);
-       VueCookies.set('userName', res.data.name,12222)
+
+        if(res.data.succes == "Logged in!"){
+          VueCookies.set('name', res.data.name,12222)
+          VueCookies.set('username', res.data.username,12222)
+          VueCookies.set('email', res.data.email,12222)
+          VueCookies.set('userStatus','loggedIn',12222)
+          this.$emit('loginSuccesful', 'loggedIn')
+        }
       }
     }
 }

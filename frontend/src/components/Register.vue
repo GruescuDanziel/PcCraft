@@ -5,36 +5,54 @@
                 <label for="firstname">First name</label>
             </div>
             <div class="fnameinp">
-                <input type="text">
+                <input id="firstNameInput" type="text">
             </div>
             <div class="Lastname">
                 <label for="lastname">Last name</label>
             </div>
             <div class="lnameinp">
-                <input type="text">
+                <input id="lastNameInput" type="text">
             </div>
             <div class="username">
                 <label for="username">Username</label>
             </div>
             <div class="userinp">
-                <input type="text">
+                <input id="userNameInput" type="text">
             </div>
             <div class="Password">
                 <label for="password">Password</label>
             </div>
             <div class="passinp">
-                <input type="text">
+                <input id="passwordInput" type="password">
             </div>
             <div class="nextbtn">
-                <button type="Button"><h2>Next</h2> </button>
+                <button type="Button" @click="makeRegisterForm"><h2>Next</h2> </button>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+
+/* import axios from 'axios' */
+import VueCookies from 'vue-cookies'
+
 export default {
-    name: 'Register'
+    name: 'Register',
+    methods : {
+      
+      makeRegisterForm(){
+        const userDataFirstHalf = {
+            "username" : document.getElementById("userNameInput").value,
+            "firstName" : document.getElementById("firstNameInput").value,
+            "lastName" : document.getElementById("lastNameInput").value,
+            "password" : document.getElementById("passwordInput").value,
+         };
+        VueCookies.set("userDataFirstHalf", userDataFirstHalf);
+        this.$emit('nextReg')
+      }
+
+    },
 }
 </script>
 
@@ -61,14 +79,12 @@ export default {
         height: 6vh;
         width: 60vw;
         box-shadow: 6px 4px 10px rgba(0, 0, 0, 0.25);
+        text-align: center;
+        font-size: 2.4vw;
     }
     .Registercontainer .Registercontent .nextbtn{
         padding: 2vh;
     }    
-    .Registercontainer .Registercontent .nextbtn img{
-        height: 7vh;
-        margin-top: 2px;
-    }
     .Registercontainer .Registercontent .nextbtn h2{
         color: white;
         width: 100%;
@@ -77,6 +93,7 @@ export default {
         margin: 0 auto;
         display: flex;
         justify-content: space-between;
+        align-items: center;
         border-style: none;
         border-radius: 15px;
         background-color:#197BBD;
@@ -86,4 +103,12 @@ export default {
         
     }
 
+    @media only screen and (max-width:414px){ 
+
+      .Registercontainer .Registercontent input{
+
+        font-size: 3vh;
+      }
+
+       }
 </style>

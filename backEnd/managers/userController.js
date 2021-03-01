@@ -6,6 +6,28 @@ const bodyParser  = require('body-parser')
 const bcrypt      = require('bcrypt')
 const jwtManager  = require('./jwtManager')
 
+function validateEmail(email) {
+  const res = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return res.test(String(email).toLowerCase());
+}
+
+async function getUser(userSearchTerm){
+    let foundUser;
+    if(validateEmail(userSearchTerm)){
+        foundUser = await usermdl.findOne({email: userSearchTerm})
+            .then((dataRes)=>{
+                if(dataRes != null){res.send("account was taken");}
+            });
+    }else{
+        foundUser = usermdl.findOne({email: userSearchTerm})
+            .then((dataRes)=>{
+                if(dataRes != null){res.send("account was taken");}
+            });
+    }
+    return foundUser;
+}
+
+
 router.post('/signup',(req, res)=>{
     let usr = new usermdl
     ({
@@ -15,13 +37,10 @@ router.post('/signup',(req, res)=>{
         email: req.body.email,
         password: req.body.password
     })
+        
+        getUser(req.body.username || req.body.email);
   
-    usermdl.findOne({email: req.body.email})
-        .then((dataRes)=>{
-            if(dataRes != null){res.send("account was taken");}
-            else {res.send("Account created");}
-        });
-    bcrypt.hash(req.body.password, 10, (err, hashed)=>{
+        bcrypt.hash(req.body.password, 10, (err, hashed)=>{
         if(!err)
         {
             let usr = new usermdl

@@ -1,17 +1,20 @@
 <template>
   <div id='mainContainer'>
     <div id="NavBar">
-        <div class="logo"><img src="../assets/PCraft.svg" alt=""></div>
+        <div class="logo"><img @click="changePage('homePage')" src="../assets/PCraft.svg" alt=""></div>
         <div class="searchbar">
             <input type="search" name="" id="" placeholder="Search...">
             <img src="../assets/Search.svg" alt="">
         </div>
-           <div class="icons">
-            <img @click="changePage('loginPage')" src="../assets/User.svg" alt="">
+          
+
+          <div  class="icons">
+            <img v-if="navBarMode == 'loggedIn'" @click="changePage('userPage')" src="../assets/User.svg" alt="">
+            <img v-else @click="changePage('loginPage')" src="../assets/User.svg" alt="">
             <img @click="changePage('explorePage')" src="../assets/Wishlist.svg" alt="">
-            <img @click="changePage('userPage')" src="../assets/Cart.svg">
+            <img @click="changePage('cartPage')" src="../assets/Cart.svg">
             <img src="../assets/Quickbuild.svg" alt="">
-          </div> 
+        </div>
           <div class='PhoneIcon'>
             
             <img @click="dropDown" src="../assets/BurgerMenu.svg">
@@ -23,6 +26,7 @@
 <script>
     export default {
       name: 'NavBar',
+      props: ['navBarMode'],
       methods:{
         changePage(nextPage){
           this.$emit('changePage', nextPage);

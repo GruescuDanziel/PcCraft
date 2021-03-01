@@ -58,10 +58,13 @@ export default {
   props : ['email'],
   data(){
     return{
-      name: VueCookies.get('userName')}
+      name: VueCookies.get('name')}
     },
   components:{
     productCard,
+  },
+  mounted(){
+    console.log(this.name)
   }
 }
 </script>
@@ -142,28 +145,32 @@ export default {
   @media only screen and (max-width:414px){
 
     .Usercontainer .User, .Usercontainer .Userdata{
-      width: 90%;
+      width: 80%;
       margin:0px;
     }
-
     .User{
-      height: 40%;
+      height: 50%;
     }
 
     .User img{
 
 
-      width: 100%;
+      width: 70%;
       border-radius: 15px;
 
     }
 
+    .Userdata{
+      
+      margin-top: 20%;
+
+    }
 
     .Usercontainer{
       flex-direction: column;
       align-items: center;
       justify-content: space-evenly;
-      height: 100%;
+      height: 90%;
     }
     .PCProduceHistory{
       display: none;

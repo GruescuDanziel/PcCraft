@@ -29,8 +29,9 @@ export default {
         flex-direction: column;
         background-color: #6699CC;
         height: 100%;
-        width: 100%;
+        width: 80%;
         padding: 2vh;
+        border-radius:2vw;
         margin-top: 17vh;
     }
     .Cartcontent .product{

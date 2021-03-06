@@ -3,14 +3,12 @@ const router      = express.Router();
 const db          = require('../database/database')
 const usermdl     = require('../database/models/user')
 const bodyParser  = require('body-parser')
-const bcrypt      = require('bcrypt');
-const { reset }   = require('nodemon');
+const bcrypt      = require('bcrypt')
+const jwtManager  = require('./jwtManager')
 
-var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
-router.post('/signup', urlencodedParser,(req, res)=>
-{
-   let usr = new usermdl
+router.post('/signup',(req, res)=>{
+    let usr = new usermdl
     ({
         username : req.body.username,
         first_name: req.body.first_name,
@@ -20,64 +18,61 @@ router.post('/signup', urlencodedParser,(req, res)=>
     })
   
     usermdl.findOne({email: req.body.email})
-  .then((dataRes)=>{
-      if(dataRes != null)
-      {
-          res.send("account was taken");
-      }
-      else {
-      }
-  });
-  bcrypt.hash(req.body.password, 10, (err, hashed)=>{
-      if(!err)
-      {
-        let usr = new usermdl
-        ({
-            first_name:   req.body.first_name,
-            last_name:    req.body.last_name,
-            email:        req.body.email,
-            password:     hashed,
-            birthdate:    req.body.birthdate,
-            location:     req.body.location,
-            phoneNumber:  req.body.phoneNumber
-        })
+        .then((dataRes)=>{
+            if(dataRes != null){res.send("account was taken");}
+            else {res.send("Account created");}
+        });
+    bcrypt.hash(req.body.password, 10, (err, hashed)=>{
+        if(!err)
+        {
+            let usr = new usermdl
+            ({
+                first_name:   req.body.first_name,
+                last_name:    req.body.last_name,
+                email:        req.body.email,
+                username:     req.body.username,
+                password:     hashed,
+                birthdate:    req.body.birthdate,
+                location:     req.body.location,
+                phoneNumber:  req.body.phoneNumber
+            })
 
-        console.log(usr);
-        usr.save();
-      }
-      else {
-        res.send(err)
-      }
+            console.log(usr);
+            usr.save();
+        }
+        else {
+            res.send(err)
+        }
     })
-
 })
 
 //User login endpoint
-router.get('/login',urlencodedParser, (req, res)=>
+router.get('/login', (req, res)=>
 {
-  usermdl.findOne({email: req.query.email})
-  .then((dataRes)=>{
-      if(dataRes != null)
-      {
-        bcrypt.compare(req.query.password, dataRes.password, (err, status)=>
-          {
-            if(status)
+    usermdl.findOne({email: req.query.email})
+        .then((dataRes)=>{
+            if(dataRes != null)
             {
-            console.log(dataRes)
-            const userJwt = jwt.sign({ 
-            email : req.query.email},
-            process.env.JWT_SECRET);
-            
-            res.cookie('jwtToken', userJwt, { maxAge: 900000, httpOnly: true})
-                .send({
-                    name : `${dataRes.last_name} ${dataRes.first_name}`,
-                    username : dataRes.username,
-                    email : dataRes.email,
-                    cookies : req.cookies,
-              })
-            }
-            else {
-              res.send('Password not correct')
+                bcrypt.compare(req.query.password, dataRes.password, (err, status)=>
+                    {
+                        if(status){
+                            const userJwt = jwtManager.create({
+                                username : dataRes.username,
+                                email : dataRes.email,
+
+                            });
+                            const name = dataRes.first_name + " " + dataRes.last_name;
+                            console.log(userJwt)
+                            res.cookie('userJwt', userJwt, { expires: new Date(Date.now() + 900000), httpOnly: true, secure: true })
+                                .json({
+                                    "username" : dataRes.username,
+                                    "name" : name,
+                                    "email" : dataRes.email,
+                                    "succes" : "Logged in!"
+                                })
+                        }
+                        else{res.send('Password not correct')}
+                    })
             }
           })
 
@@ -110,14 +105,7 @@ router.put('/updateUsr', (req, res)=>
           dataRes.save((err)=>{console.log(err)})
         }
     })
-  })
-})
-
 router.delete('/rmUser', (req, res)=>
-{
-  usermdl.findByIdAndRemove({_id: req.body.id})
-  .then((dataRes)=>{
-    if(dataRes == null)
     {
       res.send({status: true, message: "Account deleted successfully"})
     }
@@ -145,7 +133,6 @@ router.post('/resetPass', (req,res)=>
     usermdl.find({})
     let passwd = bcrypt.hash(res.password, 10)
 })
-
 
 
 module.exports = router

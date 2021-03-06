@@ -97,7 +97,7 @@ router.get('/login', (req, res)=>
 })
 
 
-router.put('/updateUsr', (req, res)=
+router.put('/updateUsr', (req, res)=>
     {
         bcrypt.hash(req.body.password, 10, (err, hashed)=>{
             usermdl.findById({_id: req.body.id})

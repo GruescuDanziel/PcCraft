@@ -66,7 +66,7 @@ router.post('/createProduct', (req, res)=>
                             maxMem:       req.body.MB_maxMem,
                             memSlots:     req.body.memSlots
                         })
-                        brea
+                        break
 
                     case 'pcase':
                         spec = new caseMdl({
@@ -126,6 +126,8 @@ router.post('/createProduct', (req, res)=>
                     price:         req.body.price,
                     type:          req.body.type,
                     specs:         spec,
+                    rating:        0,
+                    comments:      [],
                     source:        req.body.source
                 })
 
@@ -137,5 +139,5 @@ router.post('/createProduct', (req, res)=>
                 res.send({status: false, message: "Product already exists!"})
             }
         })
-}
+})
 module.exports = router

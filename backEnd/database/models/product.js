@@ -84,6 +84,8 @@ const productSchema = new mongoose.Schema({
   description: String,
   price: String,
   source: [String],
+  comments: [String],
+  rating: Number,
   specs: Object
 })
 

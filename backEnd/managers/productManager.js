@@ -11,6 +11,31 @@ const RAMmdl      = require('../database/models/product').RAMmdl
 const pbMdl       = require('../database/models/product').pbMdl
 const storageMdl  = require('../database/models/product').storageMdl
 
+router.get('/getProducts', (req, res)=>
+{
+  let results         = null
+  let SType           = req.body.type
+
+   SType = (SType == null) ? "All" : req.body.type
+
+   if(SType == "All")
+   {
+     //Get all entries from the product's DB
+     productMdl.find(null, (err, dataFound)=>
+     {
+       res.send(dataFound)
+      })
+    }
+    else{
+      //Get products from a certain group (Ex: GPU)
+      productMdl.find({type: SType}, (err, dataFound)=>
+      {
+        let results = (dataFound ? dataFound : "No results")
+        res.send(results)
+      })
+    }
+})
+
 router.get('/findProduct', (req, res)=>
 {
   let Name      = req.body.name

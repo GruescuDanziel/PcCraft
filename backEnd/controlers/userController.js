@@ -94,3 +94,7 @@ router.delete('/rmUser', (req, res)=>
             })
     })
 module.exports = {registerUser : createUser, loginUser : loginUser}
+<<<<<<< HEAD
+=======
+
+>>>>>>> addResetPassMeth

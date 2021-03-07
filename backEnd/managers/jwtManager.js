@@ -1,6 +1,11 @@
 const express = require("express");
 const jwt     = require('jsonwebtoken');
 const router  = express.Router();
+/** 
+* Creates a JWT token with user's data
+* @param {object} userData - JSON Object from req's body
+* @return {string} Returns a signed JWT token
+*/
 
 function createUserToken(userData){
     if(userData){
@@ -12,8 +17,21 @@ function createUserToken(userData){
     }
 }
 
-function setUserDataInCookies(jwtToken){
-    return jwt.verify(jwtToken, process.env.JWT_SECRET)
+/** 
+* Verify if a token is valid or not
+* @param {string} jwtToken - JWT Token to verify
+* @return {boolean} Returns true if the token is valid
+*/
+
+function verifyToken(jwtToken){
+    if(jwt.verify(jwtToken, process.env.JWT_SECRET))
+        return true
+    else
+        return false
+}
+
+function decodeToken(jwtToken){
+    return jwt.decode(jwtToken, process.env.JWT_SECRET);
 }
 
 
@@ -26,4 +44,4 @@ router.post('/startup', (req,res)=>{
             .sendStatus(200);
     }
 })
-module.exports = {'router' : router,'create' : createUserToken};
+module.exports = {'router' : router,'create' : createUserToken, 'verify' : verifyToken , 'decode' : decodeToken};

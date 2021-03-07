@@ -139,5 +139,10 @@ router.post('/createProduct', (req, res)=>
                 res.send({status: false, message: "Product already exists!"})
             }
         })
+<<<<<<< HEAD
 })
+=======
+    }
+)
+>>>>>>> addResetPassMeth
 module.exports = router

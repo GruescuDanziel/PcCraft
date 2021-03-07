@@ -179,7 +179,4 @@ function resetPassword(req, res){
     })  
   }
 }
-
-
-
 module.exports = router

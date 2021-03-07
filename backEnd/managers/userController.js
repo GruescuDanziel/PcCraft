@@ -1,11 +1,15 @@
+/** 
+* @module userController 
+* @Summary A controller for the user's account, able to do CRUD operations and more.
+*/
+
 const express     = require('express');
 const router      = express.Router();
 const db          = require('../database/database')
 const usermdl     = require('../database/models/user')
 const bodyParser  = require('body-parser')
 const bcrypt      = require('bcrypt');
-const jwt         = require('jsonwebtoken');
-const jwtManager = require('./jwtManager');
+const jwtManager  = require('./jwtManager');
 
 const urlencodedParser = bodyParser.urlencoded({ extended: false })
 const jsonParser       = bodyParser.json() 
@@ -16,6 +20,13 @@ function validateEmail(email) {
   return res.test(String(email).toLowerCase());
 }
 
+/** 
+* Get an user using an email or an username
+* @async
+* @param {string} userSearchTerm - Brief description of the parameter here. Note: For other notations of data types, please refer to JSDocs: DataTypes command.
+* @return {object} JSON Object of the User's data (from the DB)
+* @example getUser('JohnDoe')
+*/
 async function getUser(userSearchTerm){
     let foundUser;
     if(validateEmail(userSearchTerm)){
@@ -23,11 +34,11 @@ async function getUser(userSearchTerm){
             .then((dataRes)=>{
                 if(dataRes != null){return dataRes}
             });
-    }else{
-        foundUser = usermdl.findOne({username: userSearchTerm})
-            .then((dataRes)=>{
-                if(dataRes != null){return dataRes}
-            });}
+          }else{
+            foundUser = usermdl.findOne({username: userSearchTerm})
+                .then((dataRes)=>{
+                    if(dataRes != null){return dataRes}
+                });}
     console.log(foundUser)
     return foundUser;}
 
@@ -159,12 +170,24 @@ router.get('/resetPass', (req, res)=>{
 // jwt Decode
 // Update data
 
+/** 
+* Hashes a password using BCrypt
+* @param {string} newPassword - Password to hash
+* @return {string} Hashed password
+*/
 async function encrypt(newPassword){
   let hashData = '';
   await bcrypt.hash("daniel2002", 10).then(data =>{hashData = data})
   return hashData
 }
 
+/** 
+* Sends an email to the user with a reset code and then, if the code is valid, 
+* it resets the user's password
+* @summary Resets user's password
+* @param  {object} req - Web request, sent by the client
+* @param  {object} res - Web request, sent by the server
+*/
 function resetPassword(req, res){
   const resToken = req.cookies.resToken
   const verifiedToken = jwtManager.verify(resToken);

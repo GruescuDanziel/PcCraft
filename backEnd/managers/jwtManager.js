@@ -1,6 +1,11 @@
+/** @module jwtManager 
+*   @description A controller used for manipulating JWT Tokens
+*/
+
 const express = require("express");
 const jwt     = require('jsonwebtoken');
 const router  = express.Router();
+
 /** 
 * Creates a JWT token with user's data
 * @param {object} userData - JSON Object from req's body
@@ -30,6 +35,11 @@ function verifyToken(jwtToken){
         return false
 }
 
+/** 
+* Decodes a JWT token into a JSON
+* @param {string} jwtToken - JWT Token to decode
+* @return {object} JSON Object with data from the token
+*/
 function decodeToken(jwtToken){
     return jwt.decode(jwtToken, process.env.JWT_SECRET);
 }

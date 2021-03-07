@@ -15,7 +15,7 @@ const port = 8000;
 
 //Managers and Controllers
 const routerManager = require("./managers/routerManager");
-const userRoutes    = require("./managers/userController");
+const userRoutes    = require("./managers/userManager");
 const productRoutes = require("./managers/productManager");
 const jwtManager    = require("./managers/jwtManager");
 

@@ -1,8 +1,9 @@
 <template>
 
-  <navbar @dropDown="dropSideBar" @changePage="changePage" id='navBar' />
+  <navbar @dropDown="dropSideBar" @changePage="changePage" :navBarMode="navBarMode" id='navBar' />
   <div v-if='currentPage == "homePage"' id='homePage'>
     <sideBar @changePage="changePage" id='sideBar' />
+    <h1 @click='logOut' > LOG OUT </h1>
     <div id='quickBuild'>
     <quick-build />
     </div>
@@ -18,8 +19,8 @@
   </div>
   <div @register='registerUser' v-if='currentPage == "registerPage"' id='registerPage'>
     <sideBar @changePage="changePage" id='sideBar' />
-    <registerPage v-if="currentReg == 1" @click="nextReg" />
-    <registerPage2 v-if="currentReg == 2" @click="nextReg" />
+    <registerPage v-if="currentReg == 1" @nextReg="nextReg" />
+    <registerPage2 v-if="currentReg == 2" @finishedRegister="changePage('loginPage')" />
 
   </div>
 
@@ -40,10 +41,13 @@
 
   </div>
 
+  <div v-if='currentPage == "cartPage"' id='cartPage'> 
+    <cartInterface />
+  </div>
 
   <div v-if='currentPage == "loginPage"' id='loginPage'>
     <sideBar @changePage="changePage" id='sideBar' />
-    <loginPage />
+    <loginPage @loginSuccesful="changeNavBar" />
   </div>    
 
 </template>
@@ -51,6 +55,7 @@
 <script>
 
   import axios from 'axios'
+  import VueCookies from 'vue-cookies'
   
   import sideBar from './components/sideBar.vue'
   import navbar from './components/NavBar.vue'
@@ -62,6 +67,7 @@
   import registerPage2 from './components/Register2.vue'
   import loginPage from './components/login.vue'
   import userInterface from './components/Userinterface.vue'
+  import cartInterface from './components/Cart.vue'
   
   
   export default {
@@ -74,12 +80,14 @@
       registerPage,
       loginPage,
       userInterface,
-      registerPage2
+      registerPage2,
+      cartInterface
     },
     data(){
       return{
         currentPage: "homePage",
-        currentReg : 1
+        currentReg : 1,
+        navBarMode : VueCookies.get('userStatus')
       }
     },
     methods: {
@@ -99,10 +107,36 @@
           document.getElementById('quickBuild').style.filter = "blur(2px)"
           document.getElementById('productCardsPhone').style.filter = "blur(2px)"
         }
+      },
+      changeNavBar(newMode){
+        this.navBarMode = newMode;
+        this.currentPage = 'homePage';
+      },
+      checkUserStatus(){
+        if(VueCookies.get('userStatus') ==null){
+          VueCookies.set('userStatus', 'Guest', 1222222)
+        }
+        console.log(VueCookies.get('userStatus'))
+
+      },
+      logOut(){
+        console.log(VueCookies.keys())
+        for(let i = 0; i < 5; i++){
+          for (let key in VueCookies.keys()){
+            VueCookies.remove(VueCookies.keys()[key]);
+          }
+        }
+
       }
     },
+    created(){
+
+
+      this.checkUserStatus();
+    },
     mounted(){
-      axios.get('http://localhost:8000/api/user/startup', { withCredentials: true});
+      this.checkUserStatus();
+      axios.post('http://localhost:8000/api/jwt/startup');
       this.dropSideBar();
     }
 }
@@ -154,6 +188,14 @@
     align-items: center;
     height:100%;
   }
+
+  #cartPage{
+    
+    display:flex;
+    justify-content: center;
+    align-items:center;
+    
+  }
   
   #app {
     height:100%;
@@ -179,6 +221,7 @@
   #homePage #sideBar{display:block;}
   
   #sideBar{display:none;}
+
   
   @media only screen and (max-width:414px){
   
@@ -186,6 +229,15 @@
       position:relative;
       width: 100%;
       margin:3vh;
+    }
+
+
+    #mediaPage{
+
+      display:flex;
+      justify-content:center;
+      align-items:center;
+
     }
     
     

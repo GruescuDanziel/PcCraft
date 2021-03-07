@@ -4,31 +4,15 @@ const db          = require('../database/database')
 const usermdl     = require('../database/models/user')
 const bodyParser  = require('body-parser')
 const bcrypt      = require('bcrypt');
-const { reset }   = require('nodemon');
+const jwt         = require('jsonwebtoken')
 
-var urlencodedParser = bodyParser.urlencoded({ extended: false })
+const urlencodedParser = bodyParser.urlencoded({ extended: false })
+const jsonParser       = bodyParser.json() 
+const bcryptRounds     = 10
 
-router.post('/signup', urlencodedParser,(req, res)=>
+router.post('/signup', jsonParser,(req, res)=>
 {
-   let usr = new usermdl
-    ({
-        username : req.body.username,
-        first_name: req.body.first_name,
-        last_name: req.body.last_name,
-        email: req.body.email,
-        password: req.body.password
-    })
-  
-    usermdl.findOne({email: req.body.email})
-  .then((dataRes)=>{
-      if(dataRes != null)
-      {
-          res.send("account was taken");
-      }
-      else {
-      }
-  });
-  bcrypt.hash(req.body.password, 10, (err, hashed)=>{
+  bcrypt.hash(req.body.password, bcryptRounds, (err, hashed)=>{
       if(!err)
       {
         let usr = new usermdl
@@ -41,8 +25,7 @@ router.post('/signup', urlencodedParser,(req, res)=>
             location:     req.body.location,
             phoneNumber:  req.body.phoneNumber
         })
-
-        console.log(usr);
+        res.send({status: true, message:"User created sucessfully"})
         usr.save();
       }
       else {
@@ -90,7 +73,7 @@ router.get('/login',urlencodedParser, (req, res)=>
 
 router.put('/updateUsr', (req, res)=>
 {
-  bcrypt.hash(req.body.password, 10, (err, hashed)=>{
+  bcrypt.hash(req.body.password, bcryptRounds, (err, hashed)=>{
     usermdl.findById({_id: req.body.id})
     .then((dataRes)=>{
 
@@ -129,21 +112,48 @@ router.delete('/rmUser', (req, res)=>
 
 
 router.get('/resetPass', (req, res)=>{
-  let resetCode = Math.floor(Math.random() * (999999 - 100000) + 100000)
-  let email     = req.query.email
-  res.cookie('resCode', bcrypt.hash(resetCode, 10))
   
-  const userJwt = jwt.sign({ 
-    email  : email,
-    resCode: resetCode},
-    process.env.JWT_SECRET);
-    res.send(userJwt)
+  usermdl.find({email: req.body.email}, (err, usr)=>{
+
+    if(usr != null)
+    {
+      let resetCode = Math.floor(Math.random() * (999999 - 100000) + 100000)
+      let email     = req.query.email
+      
+      let userJwt = jwt.sign({ 
+        email  : email,
+        resCode: resetCode
+      },process.env.JWT_SECRET);
+
+      res.cookie('resToken', userJwt)
+      res.send(userJwt) 
+    }
+    else{
+      res.send("No user found")
+    }
+  })
 })
 
 router.post('/resetPass', (req,res)=>
 {
-    usermdl.find({})
-    let passwd = bcrypt.hash(res.password, 10)
+    token = jwt.decode(req.cookies.resToken, process.env.JWT_SECRET)
+    if(token != null)
+    {
+      usermdl.find({email: token.email}, (err, usr)=>
+      {
+        if(usr != null)
+        {
+          usr.password = req.body.password
+          res.send('Password change sucessfully')
+          
+        }
+      })
+    }
+    else
+    {
+      res.send("Sorry, but no token is provided")
+    }
+    
 })
 
 

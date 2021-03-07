@@ -24,7 +24,14 @@ function createUserToken(userData){
 */
 
 function verifyToken(jwtToken){
-    return jwt.verify(jwtToken, process.env.JWT_SECRET)
+    if(jwt.verify(jwtToken, process.env.JWT_SECRET))
+        return true
+    else
+        return false
+}
+
+function decodeToken(jwtToken){
+    return jwt.decode(jwtToken, process.env.JWT_SECRET);
 }
 
 
@@ -37,4 +44,4 @@ router.post('/startup', (req,res)=>{
             .sendStatus(200);
     }
 })
-module.exports = {'router' : router,'create' : createUserToken};
+module.exports = {'router' : router,'create' : createUserToken, 'verify' : verifyToken , 'decode' : decodeToken};

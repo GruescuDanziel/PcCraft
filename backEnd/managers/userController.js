@@ -4,11 +4,33 @@ const db          = require('../database/database')
 const usermdl     = require('../database/models/user')
 const bodyParser  = require('body-parser')
 const bcrypt      = require('bcrypt');
-const jwt         = require('jsonwebtoken')
+const jwt         = require('jsonwebtoken');
+const jwtManager = require('./jwtManager');
 
 const urlencodedParser = bodyParser.urlencoded({ extended: false })
 const jsonParser       = bodyParser.json() 
 const bcryptRounds     = 10
+
+function validateEmail(email) {
+  const res = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return res.test(String(email).toLowerCase());
+}
+
+async function getUser(userSearchTerm){
+    let foundUser;
+    if(validateEmail(userSearchTerm)){
+        foundUser = await usermdl.findOne({email: userSearchTerm})
+            .then((dataRes)=>{
+                if(dataRes != null){return dataRes}
+            });
+    }else{
+        foundUser = usermdl.findOne({username: userSearchTerm})
+            .then((dataRes)=>{
+                if(dataRes != null){return dataRes}
+            });}
+    console.log(foundUser)
+    return foundUser;}
+
 
 router.post('/signup', jsonParser,(req, res)=>
 {
@@ -134,43 +156,29 @@ router.get('/resetPass', (req, res)=>{
   })
 })
 
-router.post('/resetPass', (req,res)=>
-{
-  if(jwt.verify(req.cookies.resToken, process.env.JWT_SECRET))
-  {
-    token = jwt.decode(req.cookies.resToken, process.env.JWT_SECRET)
-    if(token != null)
-    {
-      usermdl.findOne({email: token.email}, (err, usr)=>
-      {
-        if(usr != null)
-        {
-          bcrypt.hash(req.body.password, bcryptRounds, (err, hash)=>
-          {
-            if(!err)
-            {
-              usr.password = hash
-              res.send('Password change sucessfully')
-              usr.save()
-            }
-            else{
-              res.send(err)
-            }
-          })
-        }
-      })
-    }
-    else
-    {
-      res.send("Sorry, but no token is provided")
-    }
+// jwt Decode
+// Update data
+
+async function encrypt(newPassword){
+  let hashData = '';
+  await bcrypt.hash("daniel2002", 10).then(data =>{hashData = data})
+  return hashData
+}
+
+function resetPassword(req, res){
+  const resToken = req.cookies.resToken
+  const verifiedToken = jwtManager.verify(resToken);
+  if(verifiedToken){
+    encrypt(req.body.password).then(hash =>{
+      getUser(verifiedToken.email).then(usr =>{
+        console.log(usr);
+        usr.password = hash;
+        usr.save();
+        res.sendStatus(200)
+      });
+    })  
   }
-  else
-  {
-    res.send("Token Invalid")
-  }
-    
-})
+}
 
 
 

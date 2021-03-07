@@ -1,6 +1,11 @@
 const express = require("express");
 const jwt     = require('jsonwebtoken');
 const router  = express.Router();
+/** 
+* Creates a JWT token with user's data
+* @param {object} userData - JSON Object from req's body
+* @return {string} Returns a signed JWT token
+*/
 
 function createUserToken(userData){
     if(userData){
@@ -12,7 +17,13 @@ function createUserToken(userData){
     }
 }
 
-function setUserDataInCookies(jwtToken){
+/** 
+* Verify if a token is valid or not
+* @param {string} jwtToken - JWT Token to verify
+* @return {boolean} Returns true if the token is valid
+*/
+
+function verifyToken(jwtToken){
     return jwt.verify(jwtToken, process.env.JWT_SECRET)
 }
 

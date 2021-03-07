@@ -137,5 +137,6 @@ router.post('/createProduct', (req, res)=>
                 res.send({status: false, message: "Product already exists!"})
             }
         })
-}
+    }
+)
 module.exports = router

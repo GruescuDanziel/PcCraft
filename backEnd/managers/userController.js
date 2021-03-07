@@ -118,7 +118,7 @@ router.get('/resetPass', (req, res)=>{
     if(usr != null)
     {
       let resetCode = Math.floor(Math.random() * (999999 - 100000) + 100000)
-      let email     = req.query.email
+      let email     = req.body.email
       
       let userJwt = jwt.sign({ 
         email  : email,
@@ -136,16 +136,27 @@ router.get('/resetPass', (req, res)=>{
 
 router.post('/resetPass', (req,res)=>
 {
+  if(jwt.verify(req.cookies.resToken, process.env.JWT_SECRET))
+  {
     token = jwt.decode(req.cookies.resToken, process.env.JWT_SECRET)
     if(token != null)
     {
-      usermdl.find({email: token.email}, (err, usr)=>
+      usermdl.findOne({email: token.email}, (err, usr)=>
       {
         if(usr != null)
         {
-          usr.password = req.body.password
-          res.send('Password change sucessfully')
-          
+          bcrypt.hash(req.body.password, bcryptRounds, (err, hash)=>
+          {
+            if(!err)
+            {
+              usr.password = hash
+              res.send('Password change sucessfully')
+              usr.save()
+            }
+            else{
+              res.send(err)
+            }
+          })
         }
       })
     }
@@ -153,6 +164,11 @@ router.post('/resetPass', (req,res)=>
     {
       res.send("Sorry, but no token is provided")
     }
+  }
+  else
+  {
+    res.send("Token Invalid")
+  }
     
 })
 

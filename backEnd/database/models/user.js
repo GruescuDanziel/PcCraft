@@ -9,7 +9,8 @@ const User = mongoose.model('User',
     password:     String,
     birthdate:    String,
     location:     Array,
-    phoneNumber:  Number
+    phoneNumber:  Number,
+    cart : Array
 });
 
 module.exports = User

@@ -14,11 +14,9 @@ const router  = express.Router();
 
 function createUserToken(userData){
     if(userData){
-        const jwtJsonObject = {
-            username : userData.username,
-            name : `${userData.last_name} ${userData.first_name}`,
-            email : userData.email};
-        return jwt.sign(jwtJsonObject,process.env.JWT_SECRET);
+        return jwt.sign(userData,process.env.JWT_SECRET);
+    }else{
+        return "DATA NOT PRESENT"
     }
 }
 

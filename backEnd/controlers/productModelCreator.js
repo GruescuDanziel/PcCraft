@@ -6,7 +6,10 @@ const RAMmdl      = require('../database/models/product').RAMmdl
 const pbMdl       = require('../database/models/product').pbMdl
 const storageMdl  = require('../database/models/product').storageMdl
 
-
+/**
+ * Creates a new CPU to be store in the DB
+ * @param {object} cpuData JSON Object for the CPU model   
+ */
 function createCpu(cpuData){
     return new CPUMdl({
         socket:             cpuData.CPU_SockType,
@@ -18,6 +21,10 @@ function createCpu(cpuData){
         })
 }
 
+/**
+ * Creates a new GPU to be store in the DB
+ * @param {object} cpuData JSON Object for the GPU model   
+ */
 function createGpu(gpuData){
      return new GPUMdl({
         manufacturer: gpuData.GPU_manufacturer,
@@ -31,6 +38,10 @@ function createGpu(gpuData){
     })
 }
 
+/**
+ * Creates a new Motherboard to be store in the DB
+ * @param {object} motherboardData JSON Object for the motherboard model   
+ */
 function createMotherBoard(motherboardData){
      return new mbMDL({
         type:         motherboardData.MB_type,
@@ -44,6 +55,11 @@ function createMotherBoard(motherboardData){
         memSlots:     motherboardData.memSlots
     })
 }
+
+/**
+ * Creates a new PC Case to be store in the DB
+ * @param {object} pcCaseData JSON Object for the PC Case model   
+ */
 function createPcCase(pcCaseData){
      return new caseMdl({
         type:               pcCaseData.C_type,
@@ -58,6 +74,10 @@ function createPcCase(pcCaseData){
         })
 }
 
+/**
+ * Creates a new RAM to be store in the DB
+ * @param {object} ramData JSON Object for the RAM model   
+ */
 function createRam(ramData){
      return new RAMmdl({
         model:      ramData.RAM_model,
@@ -68,6 +88,10 @@ function createRam(ramData){
         })
 }
 
+/**
+ * Creates a new Power Brick to be store in the DB
+ * @param {object} powerBrickData JSON Object for the power brick model   
+ */
 function createPowerBrick(powerBrickData){
      return new pbMdl({
         manufacturer: powerBrickData.PB_manufacturer,
@@ -77,6 +101,10 @@ function createPowerBrick(powerBrickData){
         })
 }
 
+/**
+ * Creates a new Storage Unit to be store in the DB
+ * @param {object} storageData JSON Object for the storage model   
+ */
 function createStorage(storageData){
      return new storageMdl({
         capacity:     req.body.S_capacity,
